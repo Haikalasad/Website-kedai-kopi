@@ -30,10 +30,24 @@
             <span class="self-center text-2xl font-bold whitespace-nowrap text-gray-400">Teskop</span>
         </a>
         <div class="flex items-center lg:order-2">
-            @auth
-            <a href="" class="flex items-center">
-                <img src="{{ Auth::user()->profile_picture }}" alt="Profile" class="h-8 w-8 rounded-full mr-2" />
-            </a>
+        @auth
+            <div class="relative">
+                <button onclick="toggleDropdown()" class="flex items-center focus:outline-none">
+                    <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images/default-profile.png') }}" 
+                        alt="Profile"
+                        class="h-8 w-8 rounded-full mr-2" />
+                </button>
+                <!-- Dropdown menu -->
+                <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                            class="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-100">
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
             @else
             <a href="{{ route('login.index') }}" class="text-white bg-[#b7292e] hover:bg-[#97151b] focus:ring-4 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-2">Login</a>
             @endauth
@@ -177,5 +191,13 @@
     <!-- FLOWBITE -->
     <script src="https://unpkg.com/flowbite@1.4.1/dist/flowbite.js"></script>
 </body>
+
+<script>
+    function toggleDropdown() {
+        const dropdown = document.getElementById('profileDropdown');
+        dropdown.classList.toggle('hidden');
+    }
+</script>
+
 
 </html>

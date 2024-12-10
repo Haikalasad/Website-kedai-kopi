@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\CartItem;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Transaction;
@@ -117,11 +118,14 @@ class CheckoutController extends Controller
                 'updated_at' => now(),
             ]);
         }
+
+        $cart->items()->whereIn('id', $request->selected_items)->delete();
+
+        Log::info('Items removed from cart', $request->selected_items);
         
         return response()->json(['snapToken' => $snapToken]);
         
     }
-
 
     public function callback(Request $request)
     {

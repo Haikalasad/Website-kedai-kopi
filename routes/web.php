@@ -5,6 +5,7 @@ use App\Http\Controllers\BlogsContoller;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CoffeeController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
@@ -28,8 +29,15 @@ Route::get('/contact', action: function () {
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
 
-Route::get('/login', [AuthController::class, 'index'])->name('login.index');;
+Route::get('/login', [AuthController::class, 'index'])->name('login.index');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/');
+})->name('logout');
+
+Route::get('/register', [AuthController::class, 'register_index'])->name('register.index');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 
 
