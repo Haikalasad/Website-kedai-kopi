@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="p-4 sm:ml-64">
-    <div class=" border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+    <div class="p-4  rounded-lg dark:border-gray-700">
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center">
                 <input type="text" id="search" name="search" placeholder="Search..."
@@ -12,40 +12,42 @@
                     Clear
                 </button>
             </div>
-            <a href="{{ route('admin.coffee.create') }}">
+            <a href="{{ route('admin.blog.create') }}">
                 <button type="button"
                     class="text-gray-50 bg-[#b7292e] hover:bg-[#97151b] border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 mb-2">
-                    Add Coffee
+                    Add Blog
                 </button>
             </a>
         </div>
+
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-16 py-3"><span class="sr-only">Image</span></th>
-                        <th scope="col" class="px-6 py-3">Product</th>
+                        <th scope="col" class="px-6 py-3">Title</th>
                         <th scope="col" class="px-6 py-3">Description</th>
-                        <th scope="col" class="px-6 py-3">Price</th>
                         <th scope="col" class="px-6 py-3">Action</th>
                     </tr>
                 </thead>
-                <tbody id="coffeeTable">
-                    @foreach ($coffees as $coffee)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tbody id="blogTable">
+                    @foreach ($blogs as $blog)
+                    <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td class="p-4">
-                            <img src="{{ filter_var($coffee->image_url, FILTER_VALIDATE_URL) ? $coffee->image_url : asset('storage/' . $coffee->image_url) }}"
-                                class="w-16 md:w-32 max-w-full max-h-full"
-                                alt="{{ $coffee->name }}">
-
+                            <img src="{{ filter_var($blog->image_url, FILTER_VALIDATE_URL) ? $blog->image_url : asset('storage/' . $blog->image_url) }}"
+                                class="w-16 md:w-32 max-w-full max-h-full" alt="{{ $blog->name }}">
                         </td>
-                        <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">{{ $coffee->name }}</td>
-                        <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">{{ $coffee->description }}</td>
-                        <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">{{ $coffee->price }}</td>
+                        <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                            {{ $blog->title }}
+                        </td>
+                        <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                            {{ $blog->description }}
+                        </td>
                         <td class="px-6 py-4">
-                            <a href="{{ route('admin.coffee.edit', $coffee->id) }}" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            <form action="{{ route('admin.coffee.destroy', $coffee->id) }}" method="POST" class="inline">
+                            <a href="{{ route('admin.blog.edit', $blog->id) }}" class="font-medium text-blue-600 hover:underline">Edit</a>
+                            <form action="{{ route('admin.blog.destroy', $blog->id) }}" method="POST" class="inline-block">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="font-medium text-red-600 hover:underline">Delete</button>
@@ -56,13 +58,13 @@
                 </tbody>
             </table>
         </div>
+
     </div>
 </div>
 
-
 <script>
     const searchInput = document.getElementById('search');
-    const coffeeTable = document.getElementById('coffeeTable');
+    const blogTable = document.getElementById('blogTable');
     const clearButton = document.getElementById('clearSearch');
 
     searchInput.addEventListener('input', function() {
@@ -74,34 +76,35 @@
             clearButton.classList.add('hidden');
         }
 
-        fetch(`{{ route('admin.coffee.search') }}?search=${query}`)
+        fetch(`{{ route('admin.blog.search') }}?search=${query}`)
             .then(response => response.json())
-            .then(coffees => {
-                coffeeTable.innerHTML = ''; 
-                if (coffees.length > 0) {
-                    coffees.forEach(coffee => {
-                        coffeeTable.innerHTML += `
+            .then(blogs => {
+                blogTable.innerHTML = ''; // Hapus data lama
+                if (blogs.length > 0) {
+                    blogs.forEach(blog => {
+                        blogTable.innerHTML += `
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="p-4">
-                                    <img src="${coffee.image_url.startsWith('http') ? coffee.image_url : '/storage/' + coffee.image_url}"
-                                        class="w-16 md:w-32 max-w-full max-h-full" alt="${coffee.name}">
+                                    <img src="${blog.image_url.startsWith('http') ? blog.image_url : '/storage/' + blog.image_url}" class="w-16 md:w-32 max-w-full max-h-full" alt="${blog.title}">
                                 </td>
-                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">${coffee.name}</td>
-                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">${coffee.description}</td>
-                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">${coffee.price}</td>
+                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                                    ${blog.title}
+                                </td>
+                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                                    ${blog.description}
+                                </td>
                                 <td class="px-6 py-4">
-                                    <a href="/admin/coffee/${coffee.id}/edit" class="font-medium text-blue-600 hover:underline">Edit</a>
-                                    <form action="/admin/coffee/${coffee.id}" method="POST" class="inline">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <a href="/admin/blog/${blog.id}/edit" class="font-medium text-blue-600 hover:underline">Edit</a>
+                                    <form action="/admin/blog/${blog.id}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
                                         <button type="submit" class="font-medium text-red-600 hover:underline">Delete</button>
                                     </form>
                                 </td>
                             </tr>`;
                     });
-
                 } else {
-                    coffeeTable.innerHTML = `
+                    blogTable.innerHTML = `
                         <tr>
                             <td colspan="4" class="px-6 py-4 text-center text-gray-500">
                                 No results found
@@ -114,7 +117,9 @@
     clearButton.addEventListener('click', function() {
         searchInput.value = '';
         clearButton.classList.add('hidden');
-        searchInput.dispatchEvent(new Event('input'));
+        searchInput.dispatchEvent(new Event('input')); // Trigger pencarian kosong
     });
 </script>
+
+
 @endsection

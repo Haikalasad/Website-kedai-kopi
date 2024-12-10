@@ -17,7 +17,9 @@
                 <div class="flex flex-col lg:flex-row items-center bg-white border border-gray-200 rounded-lg shadow ">
                     <!-- Image on the left with smaller size -->
                     <a href="#" class="w-full lg:w-1/4">
-                        <img class="rounded-lg lg:rounded-none lg:rounded-l-lg w-full h-48 object-cover" src="{{ $blog->image_url }}" alt="{{ $blog->title }}" />
+                        <img src="{{ filter_var($blog->image_url, FILTER_VALIDATE_URL) ? $blog->image_url : asset('storage/' . $blog->image_url) }}"
+                                class="rounded-lg lg:rounded-none lg:rounded-l-lg w-full h-48 object-cover"
+                                alt="{{ $blog->name }}">
                     </a>
                     
                     <!-- Text content on the right -->

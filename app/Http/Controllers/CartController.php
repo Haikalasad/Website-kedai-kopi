@@ -30,6 +30,9 @@ class CartController extends Controller
 
     public function addToCart(Request $request, $coffeeId)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu untuk menambahkan item ke keranjang.');
+        }
 
         $request->validate([
             'quantity' => 'required|integer|min:1',

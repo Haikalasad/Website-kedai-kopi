@@ -27,11 +27,11 @@
                         class="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300">
                 </div>
                 <button type="submit"
-                    class="w-full px-4 py-2 text-white bg-green-600 rounded-lg hover:bg-green-500 focus:ring focus:ring-green-300">
+                    class="w-full px-4 py-2 text-white bg-[#b7292e] hover:bg-[#97151b] ">
                     Login
                 </button>
                 <div class="mt-4 text-center">
-                    <a href="{{ route('register.index') }}" class="text-green-600 hover:underline">Belum punya akun? Daftar</a>
+                    <a href="{{ route('register.index') }}" class="text-[#b7292e] hover:underline">Belum punya akun? Daftar</a>
                 </div>
             </form>
         </div>

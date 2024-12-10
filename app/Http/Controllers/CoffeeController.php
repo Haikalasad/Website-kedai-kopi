@@ -21,6 +21,17 @@ class CoffeeController extends Controller
         return view('admin.index', compact('coffees'));
     }
 
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        $coffees = Coffee::where('name', 'like', "%{$search}%")
+            ->get();
+
+        return response()->json($coffees);
+    }
+
+
     public function create_index()
     {
         return view('admin.coffee_create');
@@ -58,8 +69,34 @@ class CoffeeController extends Controller
     public function edit($id)
     {
         $coffee = Coffee::findOrFail($id);
-        return view('admin.coffee.edit', compact('coffee'));
+        return view('admin.coffee-edit-admin', compact('coffee'));
     }
+
+    public function update(Request $request, $id)
+    {
+        $coffee = Coffee::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:500',
+            'price' => 'required|numeric',
+            'image_url' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('image_url')) {
+            // Hapus gambar lama jika ada
+            if ($coffee->image_url) {
+                Storage::delete('public/' . $coffee->image_url);
+            }
+
+            $validatedData['image_url'] = $request->file('image_url')->store('coffee_images', 'public');
+        }
+
+        $coffee->update($validatedData);
+
+        return redirect()->route('admin.coffee.index')->with('success', 'Coffee updated successfully!');
+    }
+
 
     public function destroy($id)
     {

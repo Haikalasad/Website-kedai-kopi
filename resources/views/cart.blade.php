@@ -14,7 +14,9 @@
             <div class="flex items-center p-4 border-b border-gray-200">
                 <input type="checkbox" name="selected_items[]" value="{{ $item->id }}" class="select-item mr-4" />
 
-                <img src="{{ $item->coffee->image_url }}" alt="{{ $item->coffee->name }}" class="w-20 h-20 object-cover rounded mr-4" />
+                <img src="{{ filter_var( $item->coffee->image_url, FILTER_VALIDATE_URL) ?  $item->coffee->image_url : asset('storage/' .  $item->coffee->image_url) }}" 
+                    class="w-20 h-20 object-cover rounded mr-4" 
+                    alt="{{  $item->coffee->name }}">
 
                 <div class="flex-grow">
                     <h2 class="text-lg font-semibold">{{ $item->coffee->name }}</h2>

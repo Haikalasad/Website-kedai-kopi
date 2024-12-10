@@ -41,21 +41,26 @@
             <ul class="space-y-2 font-medium">
                 <li class="mt-10">
                     <a href="{{ route('admin.coffee.index') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <p class="ms-1"><i class="text-gray-700 text-xl mr-3 fa-solid fa-mug-saucer"></i>Coffee</p>
+                        class="flex items-center p-2 text-gray-50 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <p class="ms-1"><i class="text-gray-50 text-xl mr-3 fa-solid fa-mug-saucer"></i>Coffee</p>
                     </a>
                 </li>
                 <li class="mt-10">
-                    <a href="{{ route('admin.coffee.index') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <p class="ms-1"><i class="text-gray-700 text-xl mr-3 fa-solid fa-newspaper"></i>Blog</p>
+                    <a href="{{ route('admin.blog.index') }}"
+                        class="flex items-center p-2 text-gray-50 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <p class="ms-1"><i class="text-gray-50 text-xl mr-3 fa-solid fa-newspaper"></i>Blog</p>
                     </a>
                 </li>
                 <li>
-                    <a href=""
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <p class="ms-1"><i class="text-gray-700 text-xl mr-3 fa-solid fa-right-from-bracket"></i>Logout</p>
-                    </a>
+                <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                     
+                        <button type="submit"
+                            class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-100"><i class="text-red-500 text-xl mr-3 fa-solid fa-right-from-bracket"></i>
+                            Logout
+                        </button>
+                    </form>
+              
                 </li>
             </ul>
         </div>
